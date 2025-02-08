@@ -51,10 +51,11 @@ function updateCharacterInfo() {
     // Create character image
     const img = document.createElement("img");
     img.id="avatar_load_preview"
+    img.classList.add("avatar");
     img.src = `/thumbnail?type=avatar&file=${characterImage}`;
-    img.style.width = getComputedStyle(document.documentElement).getPropertyValue("--avatar-base-width").trim();
-    img.style.height = getComputedStyle(document.documentElement).getPropertyValue("--avatar-base-height").trim();
-    img.style.borderRadius = "5px";
+    //img.style.width = getComputedStyle(document.documentElement).getPropertyValue("--avatar-base-width").trim();
+    //img.style.height = getComputedStyle(document.documentElement).getPropertyValue("--avatar-base-height").trim();
+    //img.style.borderRadius = "5px";
 
     console.log('[CH] Create name text');
     // Create name text
