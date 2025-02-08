@@ -1,57 +1,106 @@
-import { useState, useEffect } from "react";
+// Character Health UI Extension for SillyTavern
 import { getContext } from "../../extensions.js";
 
-export default function CharacterHealthBar() {
-    const [character, setCharacter] = useState({ name: "Unknown", avatar: "" });
-    const [health, setHealth] = useState(100);
-    const [mana, setMana] = useState(100);
+const context = getContext();
 
-    useEffect(() => {
-        const context = getContext();
-        const activeCharacter = context.characters?.find(c => c.active);
-        
-        if (activeCharacter) {
-            setCharacter({ name: activeCharacter.name, avatar: activeCharacter.avatar });
-        }
+// Create a UI container
+const healthUIContainer = document.createElement("div");
+healthUIContainer.style.position = "absolute";
+healthUIContainer.style.top = "10px";
+healthUIContainer.style.left = "10px";
+healthUIContainer.style.padding = "10px";
+healthUIContainer.style.backgroundColor = "rgba(0, 0, 0, 0.7)";
+healthUIContainer.style.borderRadius = "8px";
+healthUIContainer.style.color = "#fff";
+healthUIContainer.style.display = "flex";
+healthUIContainer.style.alignItems = "center";
+healthUIContainer.style.gap = "10px";
+document.body.appendChild(healthUIContainer);
 
-        // Fetch health and mana from STScript variables
-        const fetchVariables = async () => {
-            const healthVar = await context.runSTScript(`/getvar health`);
-            const manaVar = await context.runSTScript(`/getvar mana`);
-            setHealth(Number(healthVar) || 100);
-            setMana(Number(manaVar) || 100);
-        };
+// Get active character details
+function updateCharacterInfo() {
+    const character = context.characters.active;
+    if (!character) return;
 
-        fetchVariables();
-    }, []);
+    // Character name
+    let characterName = character.name || "Unknown";
+    
+    // Character thumbnail
+    let characterImage = character.avatar || "";
+    
+    // Clear existing UI
+    healthUIContainer.innerHTML = "";
 
-    const updateVariable = async (key, value, setter) => {
-        await getContext().runSTScript(`/setvar key=${key} value=${value}`);
-        setter(value);
-    };
+    // Create character image
+    const img = document.createElement("img");
+    img.src = characterImage;
+    img.style.width = "50px";
+    img.style.height = "50px";
+    img.style.borderRadius = "5px";
 
-    return (
-        <div className="bg-gray-900 p-4 rounded-xl shadow-lg flex items-center space-x-4 w-80">
-            <div className="flex flex-col flex-grow">
-                <span className="text-white font-bold text-lg">{character.name}</span>
-                
-                {/* Health Bar */}
-                <div className="relative w-full bg-red-700 rounded-full h-4 mt-1">
-                    <div className="absolute top-0 left-0 h-full bg-red-500 rounded-full transition-all"
-                         style={{ width: `${health}%` }} />
-                </div>
-                <span className="text-sm text-gray-300">Health: {health}%</span>
+    // Create name text
+    const nameText = document.createElement("span");
+    nameText.innerText = characterName;
+    nameText.style.fontSize = "16px";
+    nameText.style.fontWeight = "bold";
 
-                {/* Mana Bar */}
-                <div className="relative w-full bg-blue-700 rounded-full h-4 mt-1">
-                    <div className="absolute top-0 left-0 h-full bg-blue-500 rounded-full transition-all"
-                         style={{ width: `${mana}%` }} />
-                </div>
-                <span className="text-sm text-gray-300">Mana: {mana}%</span>
-            </div>
+    // Create health bar
+    const healthBarContainer = document.createElement("div");
+    healthBarContainer.style.width = "150px";
+    healthBarContainer.style.height = "10px";
+    healthBarContainer.style.backgroundColor = "#444";
+    healthBarContainer.style.borderRadius = "5px";
+    healthBarContainer.style.overflow = "hidden";
 
-            {/* Character Thumbnail */}
-            <img src={character.avatar} alt="Character Avatar" className="w-12 h-12 rounded-full object-cover border border-gray-500" />
-        </div>
-    );
+    const healthBar = document.createElement("div");
+    healthBar.style.width = "100%";
+    healthBar.style.height = "100%";
+    healthBar.style.backgroundColor = "red";
+
+    healthBarContainer.appendChild(healthBar);
+
+    // Create mana bar
+    const manaBarContainer = document.createElement("div");
+    manaBarContainer.style.width = "150px";
+    manaBarContainer.style.height = "10px";
+    manaBarContainer.style.backgroundColor = "#444";
+    manaBarContainer.style.borderRadius = "5px";
+    manaBarContainer.style.overflow = "hidden";
+
+    const manaBar = document.createElement("div");
+    manaBar.style.width = "100%";
+    manaBar.style.height = "100%";
+    manaBar.style.backgroundColor = "blue";
+
+    manaBarContainer.appendChild(manaBar);
+
+    // Append elements
+    healthUIContainer.appendChild(img);
+    healthUIContainer.appendChild(nameText);
+    healthUIContainer.appendChild(healthBarContainer);
+    healthUIContainer.appendChild(manaBarContainer);
+
+    // Update health and mana dynamically
+    function updateBars() {
+        const health = context.getVariable("character_health") || 100;
+        const mana = context.getVariable("character_mana") || 100;
+
+        healthBar.style.width = `${health}%`;
+        manaBar.style.width = `${mana}%`;
+    }
+
+    // Set STScript variables if not already set
+    if (!context.getVariable("character_health")) {
+        context.setVariable("character_health", 100);
+    }
+    if (!context.getVariable("character_mana")) {
+        context.setVariable("character_mana", 100);
+    }
+
+    // Update bars every second
+    setInterval(updateBars, 1000);
 }
+
+// Run on character selection change
+context.eventSource.on("CHAT_CHANGED", updateCharacterInfo);
+updateCharacterInfo();
