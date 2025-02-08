@@ -15,6 +15,10 @@ healthUIContainer.style.color = "#fff";
 healthUIContainer.style.display = "flex";
 healthUIContainer.style.alignItems = "center";
 healthUIContainer.style.gap = "10px";
+
+// ✅ Apply the CSS `calc()` expression using `setProperty`
+healthUIContainer.style.setProperty("width", "calc((100dvw - var(--shieldWidth) - 2px) / 2)");
+
 document.body.appendChild(healthUIContainer);
 
 // Get active character details
@@ -40,7 +44,7 @@ function updateCharacterInfo() {
     // Clear existing UI
     healthUIContainer.innerHTML = "";
 
- 
+
     // Create character image
     const avatarDiv = document.createElement("div");
     avatarDiv.classList.add("avatar"); // Add the class to match `.avatar img`
@@ -92,14 +96,14 @@ function updateCharacterInfo() {
     healthUIContainer.appendChild(manaBarContainer);
 
     // Update health and mana dynamically
-    function updateBars() {    
+    function updateBars() {
         const health = context.variables.local.get("character_health") || 100;
         const mana = context.variables.local.get("character_mana") || 100;
         healthBar.style.width = `${health}%`;
         manaBar.style.width = `${mana}%`;
     }
 
-  
+
     // Set STScript variables if not already set
     if (!context.variables.local.get("character_health")) {
         context.variables.local.set("character_health", 100);
