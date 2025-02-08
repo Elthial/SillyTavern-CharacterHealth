@@ -1,4 +1,6 @@
 // Character Health UI Extension for SillyTavern
+import { characters, eventSource, event_types } from '../../../../script.js';
+
 import { getContext } from '../../../extensions.js';
 
 const context = getContext();
@@ -21,10 +23,10 @@ document.body.appendChild(healthUIContainer);
 // Get active character details
 function updateCharacterInfo() {
 	console.log('[CH] updateCharacterInfo');
-	console.log(context);
+	console.log('[CH] context: ' + context);
     console.log('[CH] List Characters');
-    console.log(context.characters);
-    const character = context.characters[context.characterId];
+    console.log('[CH] Characters: ' + context.characters);
+    const character = characters[context.characterId];
 	
 	console.log('[CH] CharacterInfo: ' + character);
     if (!character)
@@ -119,7 +121,5 @@ function updateCharacterInfo() {
 }
 
 // Run on character selection change
-context.eventSource.on("CHAT_CHANGED", ()=>{
-    updateCharacterInfo();
-}); 
-updateCharacterInfo();
+eventSource.on(event_types.CHAT_CHANGED, ()=>(updateCharacterInfo(),null));
+eventSource.on(event_types.GROUP_UPDATED, ()=>updateCharacterInfo(),null);
