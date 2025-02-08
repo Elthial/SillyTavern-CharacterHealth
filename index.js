@@ -50,7 +50,7 @@ function updateCharacterInfo() {
     // Clear existing UI
     healthUIContainer.innerHTML = "";
 
-    log('[CH] Create character image');
+    console.log('[CH] Create character image');
     // Create character image
     const img = document.createElement("img");
     img.src = characterImage;
@@ -58,14 +58,14 @@ function updateCharacterInfo() {
     img.style.height = "50px";
     img.style.borderRadius = "5px";
 
-    log('[CH] Create name text');
+    console.log('[CH] Create name text');
     // Create name text
     const nameText = document.createElement("span");
     nameText.innerText = characterName;
     nameText.style.fontSize = "16px";
     nameText.style.fontWeight = "bold";
 
-    log('[CH] Create health bar');
+    console.log('[CH] Create health bar');
     // Create health bar
     const healthBarContainer = document.createElement("div");
     healthBarContainer.style.width = "150px";
@@ -81,7 +81,7 @@ function updateCharacterInfo() {
 
     healthBarContainer.appendChild(healthBar);
 
-    log('[CH] Create mana bar');
+    console.log('[CH] Create mana bar');
     // Create mana bar
     const manaBarContainer = document.createElement("div");
     manaBarContainer.style.width = "150px";
@@ -97,7 +97,7 @@ function updateCharacterInfo() {
 
     manaBarContainer.appendChild(manaBar);
 
-    log('[CH] Append elements');
+    console.log('[CH] Append elements');
     // Append elements
     healthUIContainer.appendChild(img);
     healthUIContainer.appendChild(nameText);
@@ -106,7 +106,7 @@ function updateCharacterInfo() {
 
     // Update health and mana dynamically
     function updateBars() {
-        log('[CH] updateBars');
+        console.log('[CH] updateBars');
         const health = context.getVariable("character_health") || 100;
         const mana = context.getVariable("character_mana") || 100;
 
@@ -114,6 +114,7 @@ function updateCharacterInfo() {
         manaBar.style.width = `${mana}%`;
     }
 
+    console.log('[CH] setVariable');
     // Set STScript variables if not already set
     if (!context.getVariable("character_health")) {
         context.setVariable("character_health", 100);
@@ -122,8 +123,11 @@ function updateCharacterInfo() {
         context.setVariable("character_mana", 100);
     }
 
+    console.log('[CH] setInterval');
     // Update bars every second
     setInterval(updateBars, 1000);
+
+    console.log('[CH] updateBars');
 }
 
 // Run on character selection change
