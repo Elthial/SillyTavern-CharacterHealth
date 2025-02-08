@@ -1,6 +1,8 @@
 // Character Health UI Extension for SillyTavern
-import { getContext } from "../../extensions.js";
+import { getContext } from '../../../extensions.js';
+import { SlashCommand } from '../../../slash-commands/SlashCommand.js';
 
+const log = (...msg) => console.log('[GE]', ...msg);
 const context = getContext();
 
 // Create a UI container
@@ -19,6 +21,8 @@ document.body.appendChild(healthUIContainer);
 
 // Get active character details
 function updateCharacterInfo() {
+	log('updateCharacterInfo');
+	
     const character = context.characters.active;
     if (!character) return;
 
