@@ -1,9 +1,6 @@
 // Character Health UI Extension for SillyTavern
 import { characters, eventSource, event_types } from '../../../../script.js';
-
 import { getContext } from '../../../extensions.js';
-
-
 
 // Create a UI container
 const healthUIContainer = document.createElement("div");
@@ -53,9 +50,10 @@ function updateCharacterInfo() {
     console.log('[CH] Create character image');
     // Create character image
     const img = document.createElement("img");
-    img.src = characterImage;
-    img.style.width = "50px";
-    img.style.height = "50px";
+    img.id="avatar_load_preview"
+    img.src = `/thumbnail?type=avatar&file=${characterImage}`;
+    img.style.width = getComputedStyle(document.documentElement).getPropertyValue("--avatar-base-width").trim();
+    img.style.height = getComputedStyle(document.documentElement).getPropertyValue("--avatar-base-height").trim();
     img.style.borderRadius = "5px";
 
     console.log('[CH] Create name text');
