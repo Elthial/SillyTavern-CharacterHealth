@@ -2,11 +2,12 @@
 import { getContext } from '../../../extensions.js';
 import { SlashCommand } from '../../../slash-commands/SlashCommand.js';
 
-const log = (...msg) => console.log('[GE]', ...msg);
+const log = (...msg) => console.log('[CH]', ...msg);
 const context = getContext();
 
 // Create a UI container
 const healthUIContainer = document.createElement("div");
+healthUIContainer.style.id="healthUIContainer"
 healthUIContainer.style.position = "absolute";
 healthUIContainer.style.top = "10px";
 healthUIContainer.style.left = "10px";
@@ -35,6 +36,7 @@ function updateCharacterInfo() {
     // Clear existing UI
     healthUIContainer.innerHTML = "";
 
+    log('Create character image');
     // Create character image
     const img = document.createElement("img");
     img.src = characterImage;
@@ -42,12 +44,14 @@ function updateCharacterInfo() {
     img.style.height = "50px";
     img.style.borderRadius = "5px";
 
+    log('Create name text');
     // Create name text
     const nameText = document.createElement("span");
     nameText.innerText = characterName;
     nameText.style.fontSize = "16px";
     nameText.style.fontWeight = "bold";
 
+    log('Create health bar');
     // Create health bar
     const healthBarContainer = document.createElement("div");
     healthBarContainer.style.width = "150px";
@@ -63,6 +67,7 @@ function updateCharacterInfo() {
 
     healthBarContainer.appendChild(healthBar);
 
+    log('Create mana bar');
     // Create mana bar
     const manaBarContainer = document.createElement("div");
     manaBarContainer.style.width = "150px";
@@ -78,6 +83,7 @@ function updateCharacterInfo() {
 
     manaBarContainer.appendChild(manaBar);
 
+    log('Append elements');
     // Append elements
     healthUIContainer.appendChild(img);
     healthUIContainer.appendChild(nameText);
