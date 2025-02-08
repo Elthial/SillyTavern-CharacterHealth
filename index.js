@@ -24,7 +24,7 @@ document.body.appendChild(healthUIContainer);
 function updateCharacterInfo() {
 	log('updateCharacterInfo');
 	
-    const character = context.characters.active;
+    const character = context.characters[context.characterId];
     if (!character) return;
 
     // Character name
