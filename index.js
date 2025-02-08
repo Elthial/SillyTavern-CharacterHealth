@@ -21,14 +21,8 @@ document.body.appendChild(healthUIContainer);
 function updateCharacterInfo() {
 
     const context = getContext();
-
-	console.log('[CH] updateCharacterInfo');
-	console.log(context);
-    console.log('[CH] List Characters');
-    console.log(context.characters);
     const character = characters[context.characterId];
 
-	console.log('[CH] CharacterInfo: ' + character);
     if (!character)
     {
         console.log('[CH] Early exit');
@@ -42,29 +36,25 @@ function updateCharacterInfo() {
 
     // Character thumbnail
     let characterImage = character.avatar || "";
-    console.log('[CH] Character img: ' + characterImage);
 
     // Clear existing UI
     healthUIContainer.innerHTML = "";
 
-    console.log('[CH] Create character image');
+ 
     // Create character image
+    const avatarDiv = document.createElement("div");
+    avatarDiv.classList.add("avatar"); // Add the class to match `.avatar img`
     const img = document.createElement("img");
     img.id="avatar_load_preview"
-    img.classList.add("avatar");
     img.src = `/thumbnail?type=avatar&file=${characterImage}`;
-    //img.style.width = getComputedStyle(document.documentElement).getPropertyValue("--avatar-base-width").trim();
-    //img.style.height = getComputedStyle(document.documentElement).getPropertyValue("--avatar-base-height").trim();
-    //img.style.borderRadius = "5px";
+    avatarDiv.appendChild(img); // Append img inside the div
 
-    console.log('[CH] Create name text');
     // Create name text
     const nameText = document.createElement("span");
     nameText.innerText = characterName;
     nameText.style.fontSize = "16px";
     nameText.style.fontWeight = "bold";
 
-    console.log('[CH] Create health bar');
     // Create health bar
     const healthBarContainer = document.createElement("div");
     healthBarContainer.style.width = "150px";
@@ -80,7 +70,6 @@ function updateCharacterInfo() {
 
     healthBarContainer.appendChild(healthBar);
 
-    console.log('[CH] Create mana bar');
     // Create mana bar
     const manaBarContainer = document.createElement("div");
     manaBarContainer.style.width = "150px";
@@ -96,24 +85,21 @@ function updateCharacterInfo() {
 
     manaBarContainer.appendChild(manaBar);
 
-    console.log('[CH] Append elements');
     // Append elements
-    healthUIContainer.appendChild(img);
+    healthUIContainer.appendChild(avatarDiv);
     healthUIContainer.appendChild(nameText);
     healthUIContainer.appendChild(healthBarContainer);
     healthUIContainer.appendChild(manaBarContainer);
 
     // Update health and mana dynamically
-    function updateBars() {
-        console.log('[CH] updateBars');
+    function updateBars() {    
         const health = context.variables.local.get("character_health") || 100;
         const mana = context.variables.local.get("character_mana") || 100;
-
         healthBar.style.width = `${health}%`;
         manaBar.style.width = `${mana}%`;
     }
 
-    console.log('[CH] setVariable');
+  
     // Set STScript variables if not already set
     if (!context.variables.local.get("character_health")) {
         context.variables.local.set("character_health", 100);
