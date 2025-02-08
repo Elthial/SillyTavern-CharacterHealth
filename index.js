@@ -38,17 +38,19 @@ function updateCharacterInfo() {
         return;
     } 
 
-    console.log('[CH] Character name: ' + characterName);
+    
     // Character name
     let characterName = character.name || "Unknown";
+    console.log('[CH] Character name: ' + characterName);
     
     // Character thumbnail
     let characterImage = character.avatar || "";
+    console.log('[CH] Character img: ' + characterImage);
     
     // Clear existing UI
     healthUIContainer.innerHTML = "";
 
-    log('Create character image');
+    log('[CH] Create character image');
     // Create character image
     const img = document.createElement("img");
     img.src = characterImage;
@@ -56,14 +58,14 @@ function updateCharacterInfo() {
     img.style.height = "50px";
     img.style.borderRadius = "5px";
 
-    log('Create name text');
+    log('[CH] Create name text');
     // Create name text
     const nameText = document.createElement("span");
     nameText.innerText = characterName;
     nameText.style.fontSize = "16px";
     nameText.style.fontWeight = "bold";
 
-    log('Create health bar');
+    log('[CH] Create health bar');
     // Create health bar
     const healthBarContainer = document.createElement("div");
     healthBarContainer.style.width = "150px";
@@ -79,7 +81,7 @@ function updateCharacterInfo() {
 
     healthBarContainer.appendChild(healthBar);
 
-    log('Create mana bar');
+    log('[CH] Create mana bar');
     // Create mana bar
     const manaBarContainer = document.createElement("div");
     manaBarContainer.style.width = "150px";
@@ -95,7 +97,7 @@ function updateCharacterInfo() {
 
     manaBarContainer.appendChild(manaBar);
 
-    log('Append elements');
+    log('[CH] Append elements');
     // Append elements
     healthUIContainer.appendChild(img);
     healthUIContainer.appendChild(nameText);
@@ -104,6 +106,7 @@ function updateCharacterInfo() {
 
     // Update health and mana dynamically
     function updateBars() {
+        log('[CH] updateBars');
         const health = context.getVariable("character_health") || 100;
         const mana = context.getVariable("character_mana") || 100;
 
