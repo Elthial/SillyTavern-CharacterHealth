@@ -23,9 +23,9 @@ document.body.appendChild(healthUIContainer);
 // Get active character details
 function updateCharacterInfo() {
 	console.log('[CH] updateCharacterInfo');
-	console.log('[CH] context: ' + context);
+	console.log(context);
     console.log('[CH] List Characters');
-    console.log('[CH] Characters: ' + context.characters);
+    console.log(context.characters);
     const character = characters[context.characterId];
 	
 	console.log('[CH] CharacterInfo: ' + character);
@@ -121,5 +121,5 @@ function updateCharacterInfo() {
 }
 
 // Run on character selection change
-eventSource.on(event_types.CHAT_CHANGED, ()=>(updateCharacterInfo(),null));
-eventSource.on(event_types.GROUP_UPDATED, ()=>updateCharacterInfo(),null);
+eventSource.on(event_types.CHAT_LOADED, ()=>(updateCharacterInfo(),null));
+eventSource.on(event_types.GROUP_LOADED, ()=>updateCharacterInfo(),null);
