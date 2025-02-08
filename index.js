@@ -2,7 +2,7 @@
 import { getContext } from '../../../extensions.js';
 import { SlashCommand } from '../../../slash-commands/SlashCommand.js';
 
-const log = (...msg) => console.log('[CH]', ...msg);
+const log = (...msg) => console.log('[GE]', ...msg);
 const context = getContext();
 
 // Create a UI container
@@ -25,8 +25,11 @@ function updateCharacterInfo() {
 	log('updateCharacterInfo');
 	
     const character = context.characters[context.characterId];
+	
+	log('CharacterInfo: ' + character);
     if (!character) return;
 
+    log('Character name: ' + characterName);
     // Character name
     let characterName = character.name || "Unknown";
     
