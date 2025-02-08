@@ -6,8 +6,8 @@ import { getContext } from '../../../extensions.js';
 const healthUIContainer = document.createElement("div");
 healthUIContainer.id="healthUIContainer"
 healthUIContainer.style.position = "absolute";
-healthUIContainer.style.top = "10px";
-healthUIContainer.style.left = "10px";
+healthUIContainer.style.top = "5px";
+healthUIContainer.style.left = "5px";
 healthUIContainer.style.padding = "10px";
 healthUIContainer.style.backgroundColor = "rgba(0, 0, 0, 0.7)";
 healthUIContainer.style.borderRadius = "8px";
@@ -15,10 +15,6 @@ healthUIContainer.style.color = "#fff";
 healthUIContainer.style.display = "flex";
 healthUIContainer.style.alignItems = "center";
 healthUIContainer.style.gap = "10px";
-
-// ✅ Apply the CSS `calc()` expression using `setProperty`
-healthUIContainer.style.setProperty("width", "calc((100dvw - var(--shieldWidth) - 2px) / 2)");
-
 document.body.appendChild(healthUIContainer);
 
 // Get active character details
