@@ -21,6 +21,10 @@ document.body.appendChild(healthUIContainer);
 function updateCharacterInfo() {
 
     const context = getContext();
+
+    console.log('[CH] Context');
+    console.log(context);
+
     const character = characters[context.characterId];
 
     if (!character)
@@ -32,7 +36,7 @@ function updateCharacterInfo() {
 
     // Character name
     let characterName = character.name || "Unknown";
-    console.log('[CH] Character name: ' + characterName);
+    console.log('[CH] Character name: {characterName}');
 
     // Character thumbnail
     let characterImage = character.avatar || "";
