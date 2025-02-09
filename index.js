@@ -35,8 +35,9 @@ function createInfoTag() {
     `;
 
     updateInfoInterval = setInterval(() => {
-        document.getElementById(`infoTag-calendar`).innerText = `${now.toDateString()} `;
-        document.getElementById(`infoTag-clock`).innerText = `${now.toLocaleTimeString()}`;
+        const now = new Date();
+        document.getElementById(`infoTag-calendar`).innerText = now.toDateString();
+        document.getElementById(`infoTag-clock`).innerText = now.toLocaleTimeString();
     }, 1000);
 
     return template;
