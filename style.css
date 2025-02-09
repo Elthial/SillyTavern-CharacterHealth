@@ -123,6 +123,12 @@
     flex-shrink: 0; /* Prevent shrinking */
 }
 
+.infoTag-bar-container {
+    width: 75%;
+    border-radius: 5px;
+    overflow: hidden;
+}
+
 .infoTag-calendar .infoTag-clock {
     flex-grow: 1; /* Allows clock to take the remaining space */
     text-align: left;

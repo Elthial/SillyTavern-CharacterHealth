@@ -24,10 +24,12 @@ function createInfoTag() {
         <div class="infoTag">
             <div class="infoTag-Id-container">
                 <div class="infoTag-avatar avatar">
-                    <i class="far fa-clock"></i>
+                    <i class="far fa-clock fa-3x"></i>
                 </div>
-                <span class="infoTag-calendar" id="infoTag-calendar">"${now.toDateString()}"</span>
-                <span class="infoTag-clock" id="infoTag-clock">"${now.toLocaleTimeString()}"</span>
+                <div class="infoTag-bar-container">
+                    <div class="infoTag-calendar" id="infoTag-calendar">${now.toDateString()}</div>
+                    <div class="infoTag-clock" id="infoTag-clock">${now.toLocaleTimeString()}</div>
+                </div>
             </div>
         </div>
     `;
