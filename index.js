@@ -20,20 +20,16 @@ document.body.appendChild(healthUIContainer);
 // Get active character details
 function updateCharacterInfo() {
 
-    const context = getContext();
+    const context = getContext();   
+
+    console.log('[CH] Character');
+    const character = characters[context.characterId];
+
+    console.log('[CH] GroupId: {context.GroupId}');    
 
     console.log('[CH] Context');
     console.log(context);
 
-    console.log('[CH] GetCharacters');
-
-    context.getCharacters().then(characters => {
-        console.log('[CH] Characters:', characters);
-    }).catch(error => {
-        console.error('[CH] Error fetching characters:', error);
-    });
-
-    const character = characters[context.characterId];
 
     if (!character)
     {
