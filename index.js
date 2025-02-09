@@ -46,11 +46,11 @@ function createCharacterTag(character, context) {
     `;
 
     // Set STScript variables if not already set
-    if (!context.variables.local.get('${safename}_health')) {
-        context.variables.local.set('${safename}_health', 100);
+    if (!context.variables.local.get(`${safename}_health`)) {
+        context.variables.local.set(`${safename}_health`, 100);
     }
-    if (!context.variables.local.get('${safename}_mana')) {
-        context.variables.local.set('${safename}_mana', 100);
+    if (!context.variables.local.get(`${safename}_mana`)) {
+        context.variables.local.set(`${safename}_mana`, 100);
     }
 
     return template;
