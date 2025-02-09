@@ -14,27 +14,25 @@ document.body.appendChild(characterTagContainer);
 //-------------------------------------------------------------------------------------
 
 // Optional info tags
-function createInfoBar(text) {
-   const infoBar = document.createElement("div");
-   infoBar.className = "info-bar";
-   infoBar.innerText = text;
-   characterTagContainer.appendChild(infoBar);
+function createinfoTag(text) {
+   const infoTag = document.createElement("div");
+   infoTag.className = "infoTag";
+   infoTag.innerText = text;
+   characterTagContainer.appendChild(infoTag);
 }
 
 // Function to create character tag
-function createCharacterTag(character) {
+function createCharacterTag(character, context) {
     const template = `
-        <div class="character-tag-bar-container" id="charactertag-${character.name}">
-            <div class="avatar">
+        <div class="characterTag">
+            <div class="characterTag-avatar avatar">
                 <img src="/thumbnail?type=avatar&file=${character.avatar}" alt="${character.name}">
             </div>
-            <span class="character-tag-name">${character.name}</span>
-            <div class="character-tag-health-bar"><div id="${character.name}-health" style="width: 100%;"></div></div>
-            <div class="character-tag-mana-bar"><div id="${character.name}-mana" style="width: 100%;"></div></div>
+            <span class="characterTag-name">${character.name}</span>
+            <div class="characterTag-bar-container"><div class="characterTag-health-bar" id="${character.name}-health"></div></div>
+            <div class="characterTag-bar-container"><div class="characterTag-mana-bar" id="${character.name}-mana"></div></div>
         </div>
     `;
-
-    const context = getContext();
 
     // Set STScript variables if not already set
     if (!context.variables.local.get('${character.name}_health')) {
@@ -64,8 +62,8 @@ function updateCharacterInfo() {
         return;
     }
 
-    // (Optional) Add info bar
-    //createInfoBar("Character Status");
+    // (Optional) Add info tag
+    //createInfoTag("Character Status");
 
     const GroupId = context.groupId;
     console.log("[CH] GroupId: " + GroupId);
@@ -97,7 +95,7 @@ function updateCharacterInfo() {
     // Populate health bars
     let characterHTML = activeCharacters
       .filter((char) => char) // Filter out undefined characters
-      .map((char) => createCharacterTag(char))
+      .map((char) => createCharacterTag(char, context))
       .join("");
 
     console.log('[CH] characterHTML');

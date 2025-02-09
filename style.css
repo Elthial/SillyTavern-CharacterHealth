@@ -11,8 +11,11 @@
     background-color: transparent; /* Invisible container */
 }
 
-/* Character Tag */
-#character-tag {
+/* ##################################### */
+/* characterTagContainer contains        */
+/* ##################################### */
+
+.characterTag {
     position: absolute;
     top: 5px;
     left: 5px;
@@ -26,43 +29,51 @@
     flex-direction: column;
     gap: 10px;
 }
+/* ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ */
+/* characterTag contains                 */
+/* ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ */
 
-.character-healthbar {
-    display: flex;
-    align-items: center;
-    gap: 10px;
-    padding: 8px;
-    background: rgba(50, 50, 50, 0.8);
-    border-radius: 5px;
-}
+/* Uses .Avatar class to reuse SillyTavern Avatar CSS */
+/* .characterTag-avatar {
+    border: 2px solid red;
+    padding: 5px;
+} */
 
-.character-tag-name {
+.characterTag-name {
     font-size: 16px;
     font-weight: bold;
 }
 
-.character-tag-bar-container {
-    width: 100%;
+.characterTag-bar-container {
+    width: 100%; /* 150px*/
     height: 10px;
     background: #444;
     border-radius: 5px;
     overflow: hidden;
 }
 
-.character-tag-health-bar {
+/* ----------------------------------- */
+/* characterTag-bar-container contains */
+/* ----------------------------------- */
+
+.characterTag-health-bar {
     height: 100%;
     background: red;
     width: 100%;
 }
 
-.character-tag-mana-bar {
+.characterTag-mana-bar {
     height: 100%;
     background: blue;
     width: 100%;
 }
 
-/* Optional Info Bar */
-#info-bar {
+/* ----------------------------------- */
+/* ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ */
+/* ##################################### */
+
+/* Optional Info Tag */
+.infoTag {
     text-align: center;
     background: rgba(80, 80, 80, 0.9);
     padding: 5px;
