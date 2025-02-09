@@ -14,7 +14,6 @@ document.body.appendChild(characterTagContainer);
 //Insert the below tags into the parent tag container
 //-------------------------------------------------------------------------------------
 
-// Optional info tags
 function createinfoTag(text) {
    const infoTag = document.createElement("div");
    infoTag.className = "infoTag";
@@ -22,7 +21,6 @@ function createinfoTag(text) {
    characterTagContainer.appendChild(infoTag);
 }
 
-// Function to create character tag
 function createCharacterTag(character, context) {
 
     //Need to correctly handle spaces
@@ -93,18 +91,18 @@ function updateCharacterInfo() {
     // Get active group/characters
     let activeCharacters = [];
 
-    const group = context.groups[context.groupId];
+    const group = groups.find(g => g.id === context.groupId);
     console.log('[CH] activeGroup');
     console.log(group)
 
-    //  if (group) {
-    //    for (let member of group.members) {
-    //      const character = characters.find(x => x.avatar === member || x.name === member);
-    //      activeCharacters.push(character);
-    //    }
-    //  } else {
-          activeCharacters.push(characters[context.characterId]);
-    //  }
+    if (group) {
+        for (let member of group.members) {
+          const character = characters.find(x => x.avatar === member || x.name === member);
+          activeCharacters.push(character);
+        }
+    } else {
+        activeCharacters.push(characters[context.characterId]);
+    }
 
     console.log('[CH] activeCharacters');
     console.log(activeCharacters);
