@@ -3,29 +3,34 @@ import { characters, eventSource, event_types } from '../../../../script.js';
 import { groups } from '../../../group-chats.js';
 import { getContext } from '../../../extensions.js';
 
-// Create main health UI container
-const healthUIContainer = document.createElement("div");
-healthUIContainer.id = "character-health-UI";
-document.body.appendChild(healthUIContainer);
 
-// Optional info bar
+// Create parent character-tag container
+const characterTagContainer = document.createElement("div");
+characterTagContainer.className = "characterTagContainer";
+document.body.appendChild(characterTagContainer);
+
+//-------------------------------------------------------------------------------------
+//Insert the below tags into the parent tag container
+//-------------------------------------------------------------------------------------
+
+// Optional info tags
 function createInfoBar(text) {
    const infoBar = document.createElement("div");
    infoBar.className = "info-bar";
    infoBar.innerText = text;
-   healthUIContainer.appendChild(infoBar);
+   characterTagContainer.appendChild(infoBar);
 }
 
-// Function to create a health bar entry
-function createHealthBar(character) {
+// Function to create character tag
+function createCharacterTag(character) {
     const template = `
-        <div class="character-bar-container" id="characterbar-${character.name}">
+        <div class="character-tag-bar-container" id="charactertag-${character.name}">
             <div class="avatar">
                 <img src="/thumbnail?type=avatar&file=${character.avatar}" alt="${character.name}">
             </div>
-            <span class="character-name">${character.name}</span>
-            <div class="health-bar"><div id="${character.name}-health" style="width: 100%;"></div></div>
-            <div class="mana-bar"><div id="${character.name}-mana" style="width: 100%;"></div></div>
+            <span class="character-tag-name">${character.name}</span>
+            <div class="character-tag-health-bar"><div id="${character.name}-health" style="width: 100%;"></div></div>
+            <div class="character-tag-mana-bar"><div id="${character.name}-mana" style="width: 100%;"></div></div>
         </div>
     `;
 
@@ -42,6 +47,8 @@ function createHealthBar(character) {
     return template;
 }
 
+//-------------------------------------------------------------------------------------
+
 // Function to update the health UI
 function updateCharacterInfo() {
     console.log("[CH] Updating Character Health UI");
@@ -49,7 +56,7 @@ function updateCharacterInfo() {
     const context = getContext();
 
     // Clear existing UI
-    healthUIContainer.innerHTML = "";
+    characterTagContainer.innerHTML = "";
 
     if (!context.characterId && !context.groupId)
     {
@@ -58,7 +65,7 @@ function updateCharacterInfo() {
     }
 
     // (Optional) Add info bar
-    createInfoBar("Character Status");
+    //createInfoBar("Character Status");
 
     const GroupId = context.groupId;
     console.log("[CH] GroupId: " + GroupId);
@@ -90,16 +97,16 @@ function updateCharacterInfo() {
     // Populate health bars
     let characterHTML = activeCharacters
       .filter((char) => char) // Filter out undefined characters
-      .map((char) => createHealthBar(char))
+      .map((char) => createCharacterTag(char))
       .join("");
 
     console.log('[CH] characterHTML');
     console.log(characterHTML);
 
     // Inject into UI
-    healthUIContainer.innerHTML += characterHTML;
+    characterTagContainer.innerHTML += characterHTML;
 
-    // Set health/mana updates
+    // health/mana variable updates
     setInterval(() => {
         characters.forEach((char) => {
             if (!char) return;

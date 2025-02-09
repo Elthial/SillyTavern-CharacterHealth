@@ -1,5 +1,18 @@
-/* Character Health UI */
-#character-health-UI {
+/* Parent container holding info and character tags */
+.characterTagContainer {
+    position: absolute;
+    top: 10px;
+    left: 0;
+    width: 20%;
+    padding: 10px;
+    display: flex;
+    flex-direction: column;
+    gap: 20px; /* 20px spacing between elements */
+    background-color: transparent; /* Invisible container */
+}
+
+/* Character Tag */
+#character-tag {
     position: absolute;
     top: 5px;
     left: 5px;
@@ -23,12 +36,12 @@
     border-radius: 5px;
 }
 
-.character-name {
+.character-tag-name {
     font-size: 16px;
     font-weight: bold;
 }
 
-.character-bar-container {
+.character-tag-bar-container {
     width: 100%;
     height: 10px;
     background: #444;
@@ -36,13 +49,13 @@
     overflow: hidden;
 }
 
-.health-bar {
+.character-tag-health-bar {
     height: 100%;
     background: red;
     width: 100%;
 }
 
-.mana-bar {
+.character-tag-mana-bar {
     height: 100%;
     background: blue;
     width: 100%;
