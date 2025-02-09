@@ -26,7 +26,12 @@ function updateCharacterInfo() {
     console.log(context);
 
     console.log('[CH] GetCharacters');
-    console.log(context.getCharacters());
+
+    context.getCharacters().then(characters => {
+        console.log('[CH] Characters:', characters);
+    }).catch(error => {
+        console.error('[CH] Error fetching characters:', error);
+    });
 
     const character = characters[context.characterId];
 
