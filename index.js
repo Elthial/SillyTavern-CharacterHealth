@@ -3,7 +3,9 @@ import { characters, eventSource, event_types } from '../../../../script.js';
 import { groups } from '../../../group-chats.js';
 import { getContext } from '../../../extensions.js';
 
-let updateInterval = null; // Store interval ID
+// Store interval ID
+let updateCharacterInterval = null; 
+let updateInfoInterval = null; 
 
 // Create parent character-tag container
 const characterTagContainer = document.createElement("div");
@@ -14,11 +16,25 @@ document.body.appendChild(characterTagContainer);
 //Insert the below tags into the parent tag container
 //-------------------------------------------------------------------------------------
 
-function createinfoTag(text) {
-   const infoTag = document.createElement("div");
-   infoTag.className = "infoTag";
-   infoTag.innerText = text;
-   characterTagContainer.appendChild(infoTag);
+// Function to create a simple info tag displaying day, date, and time
+function createInfoTag() {
+    const template = `
+        <div class="infoTag">
+            <div class="infoTag-Id-container">
+                <div class="infoTag-avatar avatar">
+                    <i class="far fa-clock"></i>
+                </div>
+                <span class="infoTag-clock" id="infoTag-clock"></span>
+            </div>
+        </div>
+    `;
+
+    updateInfoInterval = setInterval(() => {
+        const now = new Date();
+        const clockElement = document.getElementById(`infoTag-clock`);
+        clockElement.innerText = `${now.toDateString()} ${now.toLocaleTimeString()}`;
+    }, 1000);
+    return template;
 }
 
 function createCharacterTag(character, context) {
@@ -61,9 +77,11 @@ function updateCharacterInfo() {
     console.log("[CH] Updating Character Health UI");
 
     // Clear existing interval
-    if (updateInterval) {
-        clearInterval(updateInterval);
-        updateInterval = null;
+    if (updateCharacterInterval) {
+        clearInterval(updateCharacterInterval);
+        clearInterval(updateInfoInterval);
+        updateCharacterInterval = null;
+        updateInfoInterval = null;
     }
 
     const context = getContext();
@@ -78,7 +96,7 @@ function updateCharacterInfo() {
     }
 
     // (Optional) Add info tag
-    //createInfoTag("Character Status");
+    let infoHTML = createInfoTag();
 
     const GroupId = context.groupId;
     console.log("[CH] GroupId: " + GroupId);
@@ -117,10 +135,11 @@ function updateCharacterInfo() {
     console.log(characterHTML);
 
     // Inject into UI
+    characterTagContainer.innerHTML += infoHTML;
     characterTagContainer.innerHTML += characterHTML;
 
     // health/mana variable updates
-    updateInterval =setInterval(() => {
+    updateCharacterInterval = setInterval(() => {
         activeCharacters.forEach((char) => {
             if (!char) return;
 

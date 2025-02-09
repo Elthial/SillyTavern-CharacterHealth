@@ -16,7 +16,6 @@
 /* ##################################### */
 
 .characterTag {
-    position: absolute;
     top: 5px;
     left: 5px;
     width: 20%;
@@ -94,9 +93,41 @@
 
 /* Optional Info Tag */
 .infoTag {
-    text-align: center;
-    background: rgba(80, 80, 80, 0.9);
-    padding: 5px;
-    border-radius: 5px;
+    top: 5px;
+    left: 5px;
+    width: 20%;
+    min-width: 250px;
+    background: rgba(0, 0, 0, 0.7);
+    color: white;
+    border-radius: 8px;
+    padding: 10px;
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+}
+/* ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ */
+/* characterTag contains                 */
+/* ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ */
+
+.infoTag-Id-container {
+    display: flex;
+    align-items: center; /* Vertically center elements */
+    width: 100%;
+    gap: 10px; /* Space between avatar and name */
+}
+
+/* Uses .Avatar class to reuse SillyTavern Avatar CSS */
+.infoTag-avatar {
+    /* border: 2px solid red;
+    padding: 5px;*/
+    flex-shrink: 0; /* Prevent shrinking */
+}
+
+.infoTag-clock {
+    flex-grow: 1; /* Allows clock to take the remaining space */
+    text-align: left;
+    font-size: 16px;
     font-weight: bold;
+    white-space: nowrap; /* Prevents line breaks */
+    overflow: hidden;
 }
