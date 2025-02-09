@@ -4,8 +4,8 @@ import { groups } from '../../../group-chats.js';
 import { getContext } from '../../../extensions.js';
 
 // Store interval ID
-let updateCharacterInterval = null; 
-let updateInfoInterval = null; 
+let updateCharacterInterval = null;
+let updateInfoInterval = null;
 
 // Create parent character-tag container
 const characterTagContainer = document.createElement("div");
@@ -34,6 +34,7 @@ function createInfoTag() {
         const clockElement = document.getElementById(`infoTag-clock`);
         clockElement.innerText = `${now.toDateString()} ${now.toLocaleTimeString()}`;
     }, 1000);
+
     return template;
 }
 
@@ -131,6 +132,8 @@ function updateCharacterInfo() {
       .map((char) => createCharacterTag(char, context))
       .join("");
 
+    console.log('[CH] infoHTML');
+    console.log(infoHTML);
     console.log('[CH] characterHTML');
     console.log(characterHTML);
 
