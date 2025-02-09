@@ -1,5 +1,6 @@
 // Character Health UI Extension for SillyTavern
 import { characters, eventSource, event_types } from '../../../../script.js';
+import { groups, openGroupById } from '../../../group-chats.js';
 import { getContext } from '../../../extensions.js';
 
 // Create a UI container
@@ -30,7 +31,10 @@ function updateCharacterInfo() {
 
     console.log('[CH] Context');
     console.log(context);
-
+    console.log('[CH] Groups');
+    console.log(groups)
+    console.log('[CH] GroupsById');
+    console.log(openGroupById(GroupId))
 
     if (!character)
     {
