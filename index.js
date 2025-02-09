@@ -25,6 +25,9 @@ function updateCharacterInfo() {
     console.log('[CH] Context');
     console.log(context);
 
+    console.log('[CH] GetCharacters');
+    console.log(context.getCharacters());
+
     const character = characters[context.characterId];
 
     if (!character)
