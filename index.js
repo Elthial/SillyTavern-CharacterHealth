@@ -24,6 +24,10 @@ function createinfoTag(text) {
 
 // Function to create character tag
 function createCharacterTag(character, context) {
+
+    //Need to correctly handle spaces
+    const safename = character.name.replace(/\s+/g, '_');
+
     const template = `
         <div class="characterTag">
             <div class="characterTag-Id-container">
@@ -33,20 +37,20 @@ function createCharacterTag(character, context) {
                 <span class="characterTag-name">${character.name}</span>
             </div>
             <div class="characterTag-bar-container">
-                <div class="characterTag-health-bar" id="${character.name}-health"></div>
+                <div class="characterTag-health-bar" id="${safename}-health"></div>
             </div>
             <div class="characterTag-bar-container">
-                <div class="characterTag-mana-bar" id="${character.name}-mana"></div>
+                <div class="characterTag-mana-bar" id="${safename}-mana"></div>
             </div>
         </div>
     `;
 
     // Set STScript variables if not already set
-    if (!context.variables.local.get('${character.name}_health')) {
-        context.variables.local.set('${character.name}_health', 100);
+    if (!context.variables.local.get('${safename}_health')) {
+        context.variables.local.set('${safename}_health', 100);
     }
-    if (!context.variables.local.get('${character.name}_mana')) {
-        context.variables.local.set('${character.name}_mana', 100);
+    if (!context.variables.local.get('${safename}_mana')) {
+        context.variables.local.set('${safename}_mana', 100);
     }
 
     return template;
@@ -122,15 +126,18 @@ function updateCharacterInfo() {
         activeCharacters.forEach((char) => {
             if (!char) return;
 
-            const health = context.variables.local.get(`${char.name}_health`) || 100;
-            const mana = context.variables.local.get(`${char.name}_mana`) || 100;
+            //Need to correctly handle spaces
+            const safename = char.name.replace(/\s+/g, '_');
+
+            const health = context.variables.local.get(`${safename}_health`) || 100;
+            const mana = context.variables.local.get(`${safename}_mana`) || 100;
 
             console.log('[CH] barHTML');
-            console.log(`${char.name}-health`);
-            console.log(`${char.name}-mana`);
+            console.log(`${safename}-health`);
+            console.log(`${safename}-mana`);
 
-            document.getElementById(`${char.name}-health`).style.width = `${health}%`;
-            document.getElementById(`${char.name}-mana`).style.width = `${mana}%`;
+            document.getElementById(`${safename}-health`).style.width = `${health}%`;
+            document.getElementById(`${safename}-mana`).style.width = `${mana}%`;
         });
     }, 1000);
 
