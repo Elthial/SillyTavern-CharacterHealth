@@ -12,9 +12,39 @@ const characterTagContainer = document.createElement("div");
 characterTagContainer.className = "characterTagContainer";
 document.body.appendChild(characterTagContainer);
 
-//-------------------------------------------------------------------------------------
-//Insert the below tags into the parent tag container
-//-------------------------------------------------------------------------------------
+// Function to animate the health/mana bars with impact effect
+function animateBarChange(barId, newValue) {
+    const bar = document.getElementById(barId);
+    if (!bar) return;
+    
+    const currentValue = parseFloat(bar.style.width) || 100;
+    var difference = Math.abs(currentValue - newValue);
+    
+    // Flash effect by changing bar color temporarily
+    bar.style.transition = "none";
+    bar.style.backgroundColor = "rgba(255, 255, 255, 0.5)";
+    
+    setTimeout(() => {
+        bar.style.backgroundColor = "";
+        bar.style.transition = "width 1s ease-in-out";
+        bar.style.width = `${newValue}%`;
+    }, 100);
+    
+    // Gradually shrink the transition from the impact difference
+    let step = difference / 20;
+    let interval = setInterval(() => {
+        if (difference <= 0) {
+            clearInterval(interval);
+            return;
+        }
+        difference -= step;
+        bar.style.width = `${newValue + difference}%`;
+    }, 50);
+    
+    setTimeout(() => {
+        bar.style.width = `${newValue}%`;
+    }, 1000);
+}
 
 // Function to create a simple info tag displaying day, date, and time
 function createInfoTag() {
@@ -44,8 +74,6 @@ function createInfoTag() {
 }
 
 function createCharacterTag(character, context) {
-
-    //Need to correctly handle spaces
     const safename = character.name.replace(/\s+/g, '_');
 
     const template = `
@@ -65,7 +93,6 @@ function createCharacterTag(character, context) {
         </div>
     `;
 
-    // Set STScript variables if not already set
     if (!context.variables.local.get(`${safename}_health`)) {
         context.variables.local.set(`${safename}_health`, 100);
     }
@@ -76,13 +103,10 @@ function createCharacterTag(character, context) {
     return template;
 }
 
-//-------------------------------------------------------------------------------------
-
 // Function to update the health UI
 function updateCharacterInfo() {
     console.log("[CH] Updating Character Health UI");
 
-    // Clear existing interval
     if (updateCharacterInterval) {
         clearInterval(updateCharacterInterval);
         clearInterval(updateInfoInterval);
@@ -91,84 +115,46 @@ function updateCharacterInfo() {
     }
 
     const context = getContext();
-
-    // Clear existing UI
     characterTagContainer.innerHTML = "";
 
-    if (!context.characterId && !context.groupId)
-    {
+    if (!context.characterId && !context.groupId) {
         console.log('[CH] No chat loaded');
         return;
     }
 
-    // (Optional) Add info tag
     let infoHTML = createInfoTag();
 
-    const GroupId = context.groupId;
-    console.log("[CH] GroupId: " + GroupId);
-
-    console.log('[CH] Context');
-    console.log(context);
-    console.log('[CH] Groups');
-    console.log(groups)
-
-    // Get active group/characters
     let activeCharacters = [];
-
     const group = groups.find(g => g.id === context.groupId);
-    console.log('[CH] activeGroup');
-    console.log(group)
 
     if (group) {
         for (let member of group.members) {
-          const character = characters.find(x => x.avatar === member || x.name === member);
-          activeCharacters.push(character);
+            const character = characters.find(x => x.avatar === member || x.name === member);
+            activeCharacters.push(character);
         }
     } else {
         activeCharacters.push(characters[context.characterId]);
     }
 
-    console.log('[CH] activeCharacters');
-    console.log(activeCharacters);
-
-    // Populate health bars
     let characterHTML = activeCharacters
-      .filter((char) => char) // Filter out undefined characters
+      .filter((char) => char)
       .map((char) => createCharacterTag(char, context))
       .join("");
 
-    console.log('[CH] infoHTML');
-    console.log(infoHTML);
-    console.log('[CH] characterHTML');
-    console.log(characterHTML);
-
-    // Inject into UI
     characterTagContainer.innerHTML += infoHTML;
     characterTagContainer.innerHTML += characterHTML;
 
-    // health/mana variable updates
     updateCharacterInterval = setInterval(() => {
         activeCharacters.forEach((char) => {
             if (!char) return;
-
-            //Need to correctly handle spaces
             const safename = char.name.replace(/\s+/g, '_');
-
             const health = context.variables.local.get(`${safename}_health`) || 100;
             const mana = context.variables.local.get(`${safename}_mana`) || 100;
-
-            console.log('[CH] barHTML');
-            console.log(`${safename}-health`);
-            console.log(`${safename}-mana`);
-
-            document.getElementById(`${safename}-health`).style.width = `${health}%`;
-            document.getElementById(`${safename}-mana`).style.width = `${mana}%`;
+            animateBarChange(`${safename}-health`, health);
+            animateBarChange(`${safename}-mana`, mana);
         });
     }, 1000);
-
-    console.log('[CH] updateBars');
 }
 
-// Run on character selection change
-eventSource.on(event_types.CHAT_CHANGED, ()=>(updateCharacterInfo()));
-eventSource.on(event_types.GROUP_UPDATED, ()=>(updateCharacterInfo()));
+eventSource.on(event_types.CHAT_CHANGED, () => updateCharacterInfo());
+eventSource.on(event_types.GROUP_UPDATED, () => updateCharacterInfo());
