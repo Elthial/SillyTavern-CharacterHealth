@@ -3,6 +3,7 @@ import { characters, eventSource, event_types } from '../../../../script.js';
 import { groups } from '../../../group-chats.js';
 import { getContext } from '../../../extensions.js';
 
+let updateInterval = null; // Store interval ID
 
 // Create parent character-tag container
 const characterTagContainer = document.createElement("div");
@@ -56,6 +57,12 @@ function createCharacterTag(character, context) {
 // Function to update the health UI
 function updateCharacterInfo() {
     console.log("[CH] Updating Character Health UI");
+
+    // Clear existing interval
+    if (updateInterval) {
+        clearInterval(updateInterval);
+        updateInterval = null;
+    }
 
     const context = getContext();
 
@@ -111,7 +118,7 @@ function updateCharacterInfo() {
     characterTagContainer.innerHTML += characterHTML;
 
     // health/mana variable updates
-    setInterval(() => {
+    updateInterval =setInterval(() => {
         characters.forEach((char) => {
             if (!char) return;
 
