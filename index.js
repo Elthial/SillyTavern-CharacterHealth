@@ -119,7 +119,7 @@ function updateCharacterInfo() {
 
     // health/mana variable updates
     updateInterval =setInterval(() => {
-        characters.forEach((char) => {
+        activeCharacters.forEach((char) => {
             if (!char) return;
 
             const health = context.variables.local.get(`${char.name}_health`) || 100;
