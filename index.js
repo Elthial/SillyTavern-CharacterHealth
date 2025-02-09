@@ -24,7 +24,7 @@ function createInfoTag() {
                 <div class="infoTag-avatar avatar">
                     <i class="far fa-clock"></i>
                 </div>
-                <span class="infoTag-clock" id="infoTag-clock"></span>
+                <span class="infoTag-clock" id="infoTag-clock">"${now.toDateString()} ${now.toLocaleTimeString()}"</span>
             </div>
         </div>
     `;
