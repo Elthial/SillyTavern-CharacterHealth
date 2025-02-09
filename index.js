@@ -20,12 +20,13 @@ document.body.appendChild(healthUIContainer);
 // Get active character details
 function updateCharacterInfo() {
 
-    const context = getContext();   
+    const context = getContext();
 
     console.log('[CH] Character');
     const character = characters[context.characterId];
 
-    console.log('[CH] GroupId: {context.GroupId}');    
+    const GroupId = context.groupId;
+    console.log("[CH] GroupId: " + GroupId);
 
     console.log('[CH] Context');
     console.log(context);
