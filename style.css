@@ -33,6 +33,17 @@
 /* characterTag contains                 */
 /* ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ */
 
+.characterTag-Id-container {
+    width: 100%;
+    height: 10px;
+    border-radius: 5px;
+    overflow: hidden;
+}
+
+/* *********************************** */
+/* characterTag-bar-container contains */
+/* *********************************** */
+
 /* Uses .Avatar class to reuse SillyTavern Avatar CSS */
 /* .characterTag-avatar {
     border: 2px solid red;
@@ -44,8 +55,10 @@
     font-weight: bold;
 }
 
+/* *********************************** */
+
 .characterTag-bar-container {
-    width: 100%; /* 150px*/
+    width: 100%;
     height: 10px;
     background: #444;
     border-radius: 5px;

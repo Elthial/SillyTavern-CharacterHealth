@@ -25,12 +25,18 @@ function createinfoTag(text) {
 function createCharacterTag(character, context) {
     const template = `
         <div class="characterTag">
-            <div class="characterTag-avatar avatar">
-                <img src="/thumbnail?type=avatar&file=${character.avatar}" alt="${character.name}">
+            <div class="characterTag-Id-container">
+                <div class="characterTag-avatar avatar">
+                    <img src="/thumbnail?type=avatar&file=${character.avatar}" alt="${character.name}">
+                </div>
+                <span class="characterTag-name">${character.name}</span>
             </div>
-            <span class="characterTag-name">${character.name}</span>
-            <div class="characterTag-bar-container"><div class="characterTag-health-bar" id="${character.name}-health"></div></div>
-            <div class="characterTag-bar-container"><div class="characterTag-mana-bar" id="${character.name}-mana"></div></div>
+            <div class="characterTag-bar-container">
+                <div class="characterTag-health-bar" id="${character.name}-health"></div>
+            </div>
+            <div class="characterTag-bar-container">
+                <div class="characterTag-mana-bar" id="${character.name}-mana"></div>
+            </div>
         </div>
     `;
 
