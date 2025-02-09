@@ -123,7 +123,7 @@
     flex-shrink: 0; /* Prevent shrinking */
 }
 
-.infoTag-clock {
+.infoTag-calendar .infoTag-clock {
     flex-grow: 1; /* Allows clock to take the remaining space */
     text-align: left;
     font-size: 16px;

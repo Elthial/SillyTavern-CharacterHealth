@@ -18,21 +18,23 @@ document.body.appendChild(characterTagContainer);
 
 // Function to create a simple info tag displaying day, date, and time
 function createInfoTag() {
+    const now = new Date();
+
     const template = `
         <div class="infoTag">
             <div class="infoTag-Id-container">
                 <div class="infoTag-avatar avatar">
                     <i class="far fa-clock"></i>
                 </div>
-                <span class="infoTag-clock" id="infoTag-clock">"${now.toDateString()} ${now.toLocaleTimeString()}"</span>
+                <span class="infoTag-calendar" id="infoTag-calendar">"${now.toDateString()}"</span>
+                <span class="infoTag-clock" id="infoTag-clock">"${now.toLocaleTimeString()}"</span>
             </div>
         </div>
     `;
 
     updateInfoInterval = setInterval(() => {
-        const now = new Date();
-        const clockElement = document.getElementById(`infoTag-clock`);
-        clockElement.innerText = `${now.toDateString()} ${now.toLocaleTimeString()}`;
+        document.getElementById(`infoTag-calendar`).innerText = `${now.toDateString()} `;
+        document.getElementById(`infoTag-clock`).innerText = `${now.toLocaleTimeString()}`;
     }, 1000);
 
     return template;
