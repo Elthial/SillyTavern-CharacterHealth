@@ -69,6 +69,7 @@
     background: #444;
     border-radius: 5px;
     overflow: hidden;
+    z-index: 0;
 }
 
 /* ----------------------------------- */
@@ -76,12 +77,16 @@
 /* ----------------------------------- */
 
 .characterTag-health-bar {
+    position: relative;
+    z-index: 2;
     height: 100%;
     background: red;
     width: 100%;
 }
 
 .characterTag-mana-bar {
+    position: relative;
+    z-index: 2;
     height: 100%;
     background: blue;
     width: 100%;

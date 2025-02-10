@@ -12,24 +12,29 @@ const characterTagContainer = document.createElement("div");
 characterTagContainer.className = "characterTagContainer";
 document.body.appendChild(characterTagContainer);
 
+//#########################################################################
+// Bar animations
+//#########################################################################
+
+
 // Function to animate the health/mana bars with impact effect
 function animateBarChange(barId, newValue) {
     const bar = document.getElementById(barId);
     if (!bar) return;
-    
+
     const currentValue = parseFloat(bar.style.width) || 100;
     var difference = Math.abs(currentValue - newValue);
-    
+
     // Flash effect by changing bar color temporarily
     bar.style.transition = "none";
     bar.style.backgroundColor = "rgba(255, 255, 255, 0.5)";
-    
+
     setTimeout(() => {
         bar.style.backgroundColor = "";
         bar.style.transition = "width 1s ease-in-out";
         bar.style.width = `${newValue}%`;
     }, 100);
-    
+
     // Gradually shrink the transition from the impact difference
     let step = difference / 20;
     let interval = setInterval(() => {
@@ -40,11 +45,16 @@ function animateBarChange(barId, newValue) {
         difference -= step;
         bar.style.width = `${newValue + difference}%`;
     }, 50);
-    
+
     setTimeout(() => {
         bar.style.width = `${newValue}%`;
     }, 1000);
 }
+
+
+//#########################################################################
+
+
 
 // Function to create a simple info tag displaying day, date, and time
 function createInfoTag() {
