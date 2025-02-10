@@ -37,7 +37,7 @@ function animateBarChange(barId, newValue) {
         shadowBar.style.filter = "brightness(50%)";
         shadowBar.style.transition = "width 1s ease-in-out";
         barContainer.style.position = "relative";
-        barContainer.appendChild(shadowBar, bar);
+        barContainer.appendChild(shadowBar);
     }
 
     const currentValue = parseFloat(bar.style.width) || 100;
@@ -46,25 +46,23 @@ function animateBarChange(barId, newValue) {
         shadowBar.style.width = `${newValue}%`;
         return; // No effect when increasing health/mana
     }
-
-    const difference = currentValue - newValue;
+   
     shadowBar.style.width = `${currentValue}%`;
 
     // Flash effect
     bar.style.transition = "none";
-    bar.style.backgroundColor = "rgba(255, 255, 255, 0.5)";
+    bar.style.backgroundColor = "rgba(255, 255, 255, 0.75)";
 
     setTimeout(() => {
-        bar.style.backgroundColor = "";
+        bar.style.backgroundColor = "";      
         bar.style.width = `${newValue}%`;
     }, 100);
 
     setTimeout(() => {
-        shadowBar.style.transition = "width 1s ease-in-out";
+        shadowBar.style.transition = "width 3s ease-in-out";
         shadowBar.style.width = `${newValue}%`;
     }, 1000);
 }
-
 
 
 //#########################################################################
