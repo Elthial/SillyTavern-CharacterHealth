@@ -19,37 +19,52 @@ document.body.appendChild(characterTagContainer);
 
 // Function to animate the health/mana bars with impact effect
 function animateBarChange(barId, newValue) {
-    const bar = document.getElementById(barId);
-    if (!bar) return;
+    const barContainer = document.getElementById(barId)?.parentElement;
+    if (!barContainer) return;
+
+    let bar = document.getElementById(barId);
+    let shadowBar = barContainer.querySelector(`.${barId}-shadow`);
+
+    if (!shadowBar) {
+        shadowBar = document.createElement("div");
+        shadowBar.className = `${barId}-shadow`;
+        shadowBar.style.position = "absolute";
+        shadowBar.style.top = "0";
+        shadowBar.style.left = "0";
+        shadowBar.style.height = "100%";
+        shadowBar.style.width = bar.style.width;
+        shadowBar.style.backgroundColor = window.getComputedStyle(bar).backgroundColor;
+        shadowBar.style.filter = "brightness(50%)";
+        shadowBar.style.transition = "width 1s ease-in-out";
+        barContainer.style.position = "relative";
+        barContainer.appendChild(shadowBar, bar);
+    }
 
     const currentValue = parseFloat(bar.style.width) || 100;
-    var difference = Math.abs(currentValue - newValue);
+    if (newValue >= currentValue) {
+        bar.style.width = `${newValue}%`;
+        shadowBar.style.width = `${newValue}%`;
+        return; // No effect when increasing health/mana
+    }
 
-    // Flash effect by changing bar color temporarily
+    const difference = currentValue - newValue;
+    shadowBar.style.width = `${currentValue}%`;
+
+    // Flash effect
     bar.style.transition = "none";
     bar.style.backgroundColor = "rgba(255, 255, 255, 0.5)";
 
     setTimeout(() => {
         bar.style.backgroundColor = "";
-        bar.style.transition = "width 1s ease-in-out";
         bar.style.width = `${newValue}%`;
     }, 100);
 
-    // Gradually shrink the transition from the impact difference
-    let step = difference / 20;
-    let interval = setInterval(() => {
-        if (difference <= 0) {
-            clearInterval(interval);
-            return;
-        }
-        difference -= step;
-        bar.style.width = `${newValue + difference}%`;
-    }, 50);
-
     setTimeout(() => {
-        bar.style.width = `${newValue}%`;
+        shadowBar.style.transition = "width 1s ease-in-out";
+        shadowBar.style.width = `${newValue}%`;
     }, 1000);
 }
+
 
 
 //#########################################################################
