@@ -75,14 +75,6 @@
 /* characterTag-bar-container contains */
 /* ----------------------------------- */
 
-.characterTag-health-bar {
-    background: red;
-}
-
-.characterTag-mana-bar {   
-    background: blue;    
-}
-
 /* Main bar - Stays above the shadow bar */
 .characterTag-bar {
     position: relative;

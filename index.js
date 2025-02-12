@@ -90,11 +90,17 @@ function createInfoTag() {
 
 function createCharacterTag(character, barTypes, context) {
     const safename = character.name.replace(/\s+/g, '_');
-    const barsHTML = barTypes.map(type => `
+    const barsHTML = barTypes.map(bar => `
         <div class="characterTag-bar-container">
-            <div class="characterTag-${type}-bar characterTag-bar" id="${safename}-${type}"></div>
+            <div class="characterTag-bar" id="${safename}-${bar.name}" style="background-color: ${bar.barColor};"></div>
         </div>
     `).join('');
+
+    barTypes.forEach(bar => {
+        if (!context.variables.local.get(`${safename}_${bar.name}`)) {
+            context.variables.local.set(`${safename}_${bar.name}`, bar.maxValue);
+        }
+    });
 
     const template = `
         <div class="characterTag">
@@ -129,8 +135,13 @@ function updateCharacterInfo() {
         updateInfoInterval = null;
     }
 
-    // Define bar types
-    const barTypes = ["health", "mana"];
+
+    // Define bar types with attributes
+    const barTypes = [
+        { name: "health", maxValue: 100, animationType: "smooth", barColor: "red" },
+        { name: "mana", maxValue: 100, animationType: "smooth", barColor: "blue" },
+        { name: "stamina", maxValue: 100, animationType: "delayed", barColor: "green" }
+    ];
 
     const context = getContext();
     characterTagContainer.innerHTML = "";
@@ -164,9 +175,9 @@ function updateCharacterInfo() {
         activeCharacters.forEach((char) => {
             if (!char) return;
             const safename = char.name.replace(/\s+/g, '_');
-            barTypes.forEach(type => {
-                const value = context.variables.local.get(`${safename}_${type}`) || 100;
-                animateBarChange(`${safename}-${type}`, value);
+            barTypes.forEach(bar => {
+                const value = context.variables.local.get(`${safename}_${bar.name}`) || bar.maxValue;
+                animateBarChange(`${safename}-${bar.name}`, value);
             });
         });
     }, 1000);
