@@ -16,8 +16,9 @@ document.body.appendChild(characterTagContainer);
 // Bar animations
 //#########################################################################
 
+//#########################################################################
 
-// Function to animate the health/mana bars with impact effect
+// Function to animate bars with impact effect
 function animateBarChange(barId, newValue) {
     const barContainer = document.getElementById(barId)?.parentElement;
     if (!barContainer) return;
@@ -27,16 +28,8 @@ function animateBarChange(barId, newValue) {
 
     if (!shadowBar) {
         shadowBar = document.createElement("div");
-        shadowBar.className = `${barId}-shadow`;
-        shadowBar.style.position = "absolute";
-        shadowBar.style.top = "0";
-        shadowBar.style.left = "0";
-        shadowBar.style.height = "100%";
+        shadowBar.className = `${barId}-shadow characterTag-bar-shadow`;
         shadowBar.style.width = bar.style.width;
-        shadowBar.style.backgroundColor = window.getComputedStyle(bar).backgroundColor;
-        shadowBar.style.filter = "brightness(50%)";
-        shadowBar.style.transition = "width 1s ease-in-out";
-        barContainer.style.position = "relative";
         barContainer.appendChild(shadowBar);
     }
 
@@ -44,25 +37,24 @@ function animateBarChange(barId, newValue) {
     if (newValue >= currentValue) {
         bar.style.width = `${newValue}%`;
         shadowBar.style.width = `${newValue}%`;
-        return; // No effect when increasing health/mana
+        return;
     }
-   
+
     shadowBar.style.width = `${currentValue}%`;
 
     // Flash effect
-    bar.style.transition = "none";
-    bar.style.backgroundColor = "rgba(255, 255, 255, 0.75)";
+    bar.classList.add("characterTag-bar-flash");
 
     setTimeout(() => {
-        bar.style.backgroundColor = "";      
+        bar.classList.remove("characterTag-bar-flash");
         bar.style.width = `${newValue}%`;
     }, 100);
 
     setTimeout(() => {
-        shadowBar.style.transition = "width 3s ease-in-out";
         shadowBar.style.width = `${newValue}%`;
     }, 1000);
 }
+
 
 
 //#########################################################################
@@ -96,8 +88,13 @@ function createInfoTag() {
     return template;
 }
 
-function createCharacterTag(character, context) {
+function createCharacterTag(character, barTypes, context) {
     const safename = character.name.replace(/\s+/g, '_');
+    const barsHTML = barTypes.map(type => `
+        <div class="characterTag-bar-container">
+            <div class="characterTag-${type}-bar characterTag-bar" id="${safename}-${type}"></div>
+        </div>
+    `).join('');
 
     const template = `
         <div class="characterTag">
@@ -107,28 +104,23 @@ function createCharacterTag(character, context) {
                 </div>
                 <span class="characterTag-name">${character.name}</span>
             </div>
-            <div class="characterTag-bar-container">
-                <div class="characterTag-health-bar" id="${safename}-health"></div>
-            </div>
-            <div class="characterTag-bar-container">
-                <div class="characterTag-mana-bar" id="${safename}-mana"></div>
-            </div>
+            ${barsHTML}
         </div>
     `;
 
-    if (!context.variables.local.get(`${safename}_health`)) {
-        context.variables.local.set(`${safename}_health`, 100);
-    }
-    if (!context.variables.local.get(`${safename}_mana`)) {
-        context.variables.local.set(`${safename}_mana`, 100);
-    }
+    //Need to populate the default value on init
+    barTypes.forEach(type => {
+        if (!context.variables.local.get(`${safename}_${type}`)) {
+            context.variables.local.set(`${safename}_${type}`, 100);
+        }
+    });
 
     return template;
 }
 
 // Function to update the health UI
 function updateCharacterInfo() {
-    console.log("[CH] Updating Character Health UI");
+    console.log("[CH] Updating Character Tag UI");
 
     if (updateCharacterInterval) {
         clearInterval(updateCharacterInterval);
@@ -136,6 +128,9 @@ function updateCharacterInfo() {
         updateCharacterInterval = null;
         updateInfoInterval = null;
     }
+
+    // Define bar types
+    const barTypes = ["health", "mana"];
 
     const context = getContext();
     characterTagContainer.innerHTML = "";
@@ -151,18 +146,16 @@ function updateCharacterInfo() {
     const group = groups.find(g => g.id === context.groupId);
 
     if (group) {
-        for (let member of group.members) {
-            const character = characters.find(x => x.avatar === member || x.name === member);
-            activeCharacters.push(character);
-        }
+        activeCharacters = group.members.map(member =>
+            characters.find(x => x.avatar === member || x.name === member)
+        ).filter(Boolean);
     } else {
         activeCharacters.push(characters[context.characterId]);
     }
 
     let characterHTML = activeCharacters
-      .filter((char) => char)
-      .map((char) => createCharacterTag(char, context))
-      .join("");
+        .map(char => createCharacterTag(char, barTypes, context))
+        .join("");
 
     characterTagContainer.innerHTML += infoHTML;
     characterTagContainer.innerHTML += characterHTML;
@@ -171,10 +164,10 @@ function updateCharacterInfo() {
         activeCharacters.forEach((char) => {
             if (!char) return;
             const safename = char.name.replace(/\s+/g, '_');
-            const health = context.variables.local.get(`${safename}_health`) || 100;
-            const mana = context.variables.local.get(`${safename}_mana`) || 100;
-            animateBarChange(`${safename}-health`, health);
-            animateBarChange(`${safename}-mana`, mana);
+            barTypes.forEach(type => {
+                const value = context.variables.local.get(`${safename}_${type}`) || 100;
+                animateBarChange(`${safename}-${type}`, value);
+            });
         });
     }, 1000);
 }
